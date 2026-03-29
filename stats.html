@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClaw 课堂调查 · 统计报告</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif;
@@ -34,14 +30,9 @@
             text-align: center;
         }
         
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
         
-        .content {
-            padding: 30px;
-        }
+        .content { padding: 30px; }
         
         .nav-links {
             display: flex;
@@ -58,13 +49,9 @@
             text-decoration: none;
             color: #667eea;
             font-weight: 600;
-            transition: all 0.3s;
         }
         
-        .nav-links a:hover {
-            background: #667eea;
-            color: white;
-        }
+        .nav-links a:hover { background: #667eea; color: white; }
         
         .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -74,10 +61,7 @@
             margin-bottom: 25px;
         }
         
-        .stats-card h2 {
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
+        .stats-card h2 { margin-bottom: 20px; font-size: 20px; }
         
         .stats-grid {
             display: grid;
@@ -92,16 +76,8 @@
             border-radius: 12px;
         }
         
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
+        .stat-number { font-size: 36px; font-weight: bold; }
+        .stat-label { font-size: 13px; opacity: 0.9; margin-top: 5px; }
         
         .chart-section {
             background: #f8f9ff;
@@ -116,9 +92,7 @@
             font-size: 18px;
         }
         
-        .bar-chart {
-            margin-bottom: 15px;
-        }
+        .bar-chart { margin-bottom: 15px; }
         
         .bar-label {
             display: flex;
@@ -163,29 +137,13 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .rank-item .count {
-            font-size: 28px;
-            font-weight: bold;
-        }
+        .rank-item .count { font-size: 28px; font-weight: bold; }
         
         .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
         .rank-diamond { background: #b9f2ff; color: #333; }
         .rank-gold { background: #ffd700; color: #333; }
         .rank-silver { background: #c0c0c0; color: #333; }
         .rank-bronze { background: #cd7f32; color: white; }
-        
-        .table-section {
-            background: #f8f9ff;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .table-section h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
         
         table {
             width: 100%;
@@ -198,14 +156,8 @@
             border-bottom: 1px solid #e0e0e0;
         }
         
-        th {
-            background: #667eea;
-            color: white;
-        }
-        
-        tr:hover {
-            background: #f0f0ff;
-        }
+        th { background: #667eea; color: white; }
+        tr:hover { background: #f0f0ff; }
         
         .rank-badge {
             display: inline-block;
@@ -230,9 +182,7 @@
             margin: 0 auto 15px;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .empty-state {
             text-align: center;
@@ -240,20 +190,11 @@
             color: #666;
         }
         
-        .empty-state h3 {
-            margin-bottom: 10px;
-            color: #667eea;
-        }
+        .empty-state h3 { margin-bottom: 10px; color: #667eea; }
         
         @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .rank-distribution {
-                flex-direction: column;
-                align-items: center;
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .rank-distribution { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
@@ -265,21 +206,17 @@
         </div>
         
         <div class="content">
-            <!-- 导航 -->
             <div class="nav-links">
                 <a href="survey.html">📝 填写问卷</a>
                 <a href="stats.html">📊 查看统计</a>
             </div>
             
-            <!-- 加载状态 -->
             <div id="loading" class="loading">
                 <div class="loading-spinner"></div>
                 <p>正在加载统计数据...</p>
             </div>
             
-            <!-- 数据展示 -->
             <div id="statsContent" style="display: none;">
-                <!-- 总体统计 -->
                 <div class="stats-card">
                     <h2>📈 总体统计</h2>
                     <div class="stats-grid">
@@ -302,29 +239,22 @@
                     </div>
                 </div>
                 
-                <!-- 段位分布 -->
                 <div class="chart-section">
                     <h3>🏆 段位分布</h3>
-                    <div class="rank-distribution" id="rankDist">
-                    </div>
+                    <div class="rank-distribution" id="rankDist"></div>
                 </div>
                 
-                <!-- 职业分布 -->
                 <div class="chart-section">
                     <h3>👥 职业/角色分布</h3>
-                    <div id="roleChart">
-                    </div>
+                    <div id="roleChart"></div>
                 </div>
                 
-                <!-- 使用频率 -->
                 <div class="chart-section">
                     <h3>📊 使用频率分布</h3>
-                    <div id="freqChart">
-                    </div>
+                    <div id="freqChart"></div>
                 </div>
                 
-                <!-- 详细数据 -->
-                <div class="table-section">
+                <div class="chart-section">
                     <h3>📋 详细数据</h3>
                     <table>
                         <thead>
@@ -336,13 +266,11 @@
                                 <th>段位</th>
                             </tr>
                         </thead>
-                        <tbody id="detailTable">
-                        </tbody>
+                        <tbody id="detailTable"></tbody>
                     </table>
                 </div>
             </div>
             
-            <!-- 空状态 -->
             <div id="emptyState" class="empty-state" style="display: none;">
                 <h3>暂无数据</h3>
                 <p>还没有人填写问卷，快去邀请同学吧！</p>
@@ -353,10 +281,10 @@
 
     <script>
         const CONFIG = {
-            dataUrl: 'https://raw.githubusercontent.com/nashjulv/openclaw-survey/main/data/survey-data.json'
+            repoOwner: 'nashjulv',
+            repoName: 'openclaw-survey'
         };
         
-        // 计算分数
         function calculateScore(data) {
             let score = 0;
             if (data.usedAI && data.usedAI !== '没有') score += 1;
@@ -367,7 +295,6 @@
             return score;
         }
         
-        // 获取段位
         function getRankInfo(score) {
             if (score >= 8) return { rank: '王者', class: 'rank-king' };
             if (score >= 6) return { rank: '钻石', class: 'rank-diamond' };
@@ -376,31 +303,41 @@
             return { rank: '青铜', class: 'rank-bronze' };
         }
         
-        // 加载数据
+        function parseIssueToData(issue) {
+            const body = issue.body || '';
+            const data = { name: '', role: '', usedAI: '', purposes: [], frequency: '', rating: 0, goal: '', comment: '' };
+            
+            const nameMatch = body.match(/\*\*称呼\*\*:\s*(.+)/);
+            if (nameMatch) data.name = nameMatch[1].trim();
+            
+            const roleMatch = body.match(/\*\*角色\*\*:\s*(.+)/);
+            if (roleMatch) data.role = roleMatch[1].trim();
+            
+            const usedAIMatch = body.match(/\*\*之前用过 AI\*\*:\s*(.+)/);
+            if (usedAIMatch) data.usedAI = usedAIMatch[1].trim();
+            
+            const purposeMatch = body.match(/\*\*使用目的\*\*:\s*(.+)/);
+            if (purposeMatch) data.purposes = purposeMatch[1].split(',').map(s => s.trim()).filter(s => s && s !== '未选择');
+            
+            const freqMatch = body.match(/\*\*使用频率\*\*:\s*(.+)/);
+            if (freqMatch) data.frequency = freqMatch[1].trim();
+            
+            const ratingMatch = body.match(/\*\*熟练度\*\*:\s*(\d)/);
+            if (ratingMatch) data.rating = parseInt(ratingMatch[1]);
+            
+            return data;
+        }
+        
         async function loadData() {
             try {
-                // 优先从 localStorage 读取
-                let data = [];
-                const saved = localStorage.getItem('openclaw_survey_data');
-                if (saved) {
-                    try {
-                        data = JSON.parse(saved);
-                    } catch (e) {}
-                }
+                const response = await fetch(`https://api.github.com/repos/${CONFIG.repoOwner}/${CONFIG.repoName}/issues?labels=survey&state=all&per_page=100`, {
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
+                });
                 
-                // 尝试从 GitHub 读取
-                try {
-                    const response = await fetch(CONFIG.dataUrl + '?t=' + Date.now());
-                    if (response.ok) {
-                        const githubData = await response.json();
-                        if (githubData && githubData.length > 0) {
-                            data = githubData;
-                            localStorage.setItem('openclaw_survey_data', JSON.stringify(data));
-                        }
-                    }
-                } catch (e) {
-                    console.log('从 GitHub 读取失败，使用本地数据');
-                }
+                if (!response.ok) throw new Error('加载失败');
+                
+                const issues = await response.json();
+                const data = issues.map(parseIssueToData).filter(d => d.name);
                 
                 if (data.length === 0) {
                     showEmpty();
@@ -414,13 +351,11 @@
             }
         }
         
-        // 显示空状态
         function showEmpty() {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('emptyState').style.display = 'block';
         }
         
-        // 渲染统计
         function renderStats(data) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('statsContent').style.display = 'block';
@@ -435,98 +370,74 @@
             document.getElementById('avgRating').textContent = avgRating;
             
             const rankOrder = ['王者', '钻石', '黄金', '白银', '青铜'];
-            const ranks = data.map(d => getRankInfo(calculateScore(d)).rank);
-            const topRank = ranks.sort((a, b) => rankOrder.indexOf(a) - rankOrder.indexOf(b))[0];
+            const topRank = data.map(d => getRankInfo(calculateScore(d)).rank)
+                .sort((a, b) => rankOrder.indexOf(a) - rankOrder.indexOf(b))[0];
             document.getElementById('topRank').textContent = topRank;
             
             // 段位分布
+            const ranks = data.map(d => getRankInfo(calculateScore(d)).rank);
             const rankCounts = {};
             ranks.forEach(r => rankCounts[r] = (rankCounts[r] || 0) + 1);
             
-            const rankDistHtml = ['王者', '钻石', '黄金', '白银', '青铜'].map(rank => {
+            document.getElementById('rankDist').innerHTML = ['王者', '钻石', '黄金', '白银', '青铜'].map(rank => {
                 const count = rankCounts[rank] || 0;
-                const className = 'rank-' + rank;
-                return `
-                    <div class="rank-item ${className}">
-                        <div class="count">${count}</div>
-                        <div>${rank}</div>
-                    </div>
-                `;
+                return `<div class="rank-item rank-${rank}"><div class="count">${count}</div><div>${rank}</div></div>`;
             }).join('');
-            document.getElementById('rankDist').innerHTML = rankDistHtml;
             
             // 职业分布
             const roleCounts = {};
-            data.forEach(d => {
-                const role = d.role || '其他';
-                roleCounts[role] = (roleCounts[role] || 0) + 1;
-            });
+            data.forEach(d => { const role = d.role || '其他'; roleCounts[role] = (roleCounts[role] || 0) + 1; });
             
             const maxRole = Math.max(...Object.values(roleCounts));
-            const roleChartHtml = Object.entries(roleCounts)
+            document.getElementById('roleChart').innerHTML = Object.entries(roleCounts)
                 .sort((a, b) => b[1] - a[1])
                 .map(([role, count]) => {
                     const percent = (count / data.length * 100).toFixed(0);
                     return `
                         <div class="bar-chart">
-                            <div class="bar-label">
-                                <span>${role}</span>
-                                <span>${count}人 (${percent}%)</span>
-                            </div>
+                            <div class="bar-label"><span>${role}</span><span>${count}人 (${percent}%)</span></div>
                             <div class="bar-container">
                                 <div class="bar-fill" style="width: ${count / maxRole * 100}%">${count}</div>
                             </div>
                         </div>
                     `;
                 }).join('');
-            document.getElementById('roleChart').innerHTML = roleChartHtml;
             
             // 使用频率分布
             const freqCounts = {};
-            data.forEach(d => {
-                const freq = d.frequency || '偶尔';
-                freqCounts[freq] = (freqCounts[freq] || 0) + 1;
-            });
+            data.forEach(d => { const freq = d.frequency || '偶尔'; freqCounts[freq] = (freqCounts[freq] || 0) + 1; });
             
             const freqOrder = ['每天', '每周', '偶尔', '重度'];
             const maxFreq = Math.max(...Object.values(freqCounts));
-            const freqChartHtml = freqOrder
+            document.getElementById('freqChart').innerHTML = freqOrder
                 .filter(f => freqCounts[f])
                 .map(freq => {
                     const count = freqCounts[freq];
-                    const percent = (count / data.length * 100).toFixed(0);
                     return `
                         <div class="bar-chart">
-                            <div class="bar-label">
-                                <span>${freq}</span>
-                                <span>${count}人 (${percent}%)</span>
-                            </div>
+                            <div class="bar-label"><span>${freq}</span><span>${count}人</span></div>
                             <div class="bar-container">
                                 <div class="bar-fill" style="width: ${count / maxFreq * 100}%">${count}</div>
                             </div>
                         </div>
                     `;
                 }).join('');
-            document.getElementById('freqChart').innerHTML = freqChartHtml;
             
             // 详细数据表
-            const detailHtml = data.map(d => {
-                const score = calculateScore(d);
-                const rankInfo = getRankInfo(score);
+            document.getElementById('detailTable').innerHTML = data.map(d => {
+                const rankInfo = getRankInfo(calculateScore(d));
                 return `
                     <tr>
-                        <td>${d.name || '-'}</td>
-                        <td>${d.role || '-'}</td>
+                        <td>${d.name}</td>
+                        <td>${d.role}</td>
                         <td>${d.frequency || '-'}</td>
                         <td>${d.rating || 0}/5</td>
                         <td><span class="rank-badge rank-${rankInfo.class}">${rankInfo.rank}</span></td>
                     </tr>
                 `;
             }).join('');
-            document.getElementById('detailTable').innerHTML = detailHtml;
         }
         
-        // 初始化
         window.onload = loadData;
     </script>
 </body>
