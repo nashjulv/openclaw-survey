@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 课堂调查 · 统计报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .nav-links a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: #f0f0ff;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .stats-card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 15px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .chart-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .chart-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .bar-chart {
+            margin-bottom: 15px;
+        }
+        
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .bar-container {
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .rank-distribution {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .rank-item {
+            text-align: center;
+            padding: 15px 25px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .rank-item .count {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .rank-diamond { background: #b9f2ff; color: #333; }
+        .rank-gold { background: #ffd700; color: #333; }
+        .rank-silver { background: #c0c0c0; color: #333; }
+        .rank-bronze { background: #cd7f32; color: white; }
+        
+        .table-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .table-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        tr:hover {
+            background: #f0f0ff;
+        }
+        
+        .rank-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .rank-distribution {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 OpenClaw 课堂调查结果</h1>
+            <p>AI 应用能力诊断 · 统计报告</p>
+        </div>
+        
+        <div class="content">
+            <!-- 导航 -->
+            <div class="nav-links">
+                <a href="survey.html">📝 填写问卷</a>
+                <a href="stats.html">📊 查看统计</a>
+            </div>
+            
+            <!-- 加载状态 -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p>正在加载统计数据...</p>
+            </div>
+            
+            <!-- 数据展示 -->
+            <div id="statsContent" style="display: none;">
+                <!-- 总体统计 -->
+                <div class="stats-card">
+                    <h2>📈 总体统计</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalCount">0</div>
+                            <div class="stat-label">参与人数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="avgScore">0</div>
+                            <div class="stat-label">平均分数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="avgRating">0</div>
+                            <div class="stat-label">平均熟练度</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="topRank">-</div>
+                            <div class="stat-label">最高段位</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 段位分布 -->
+                <div class="chart-section">
+                    <h3>🏆 段位分布</h3>
+                    <div class="rank-distribution" id="rankDist">
+                    </div>
+                </div>
+                
+                <!-- 职业分布 -->
+                <div class="chart-section">
+                    <h3>👥 职业/角色分布</h3>
+                    <div id="roleChart">
+                    </div>
+                </div>
+                
+                <!-- 使用频率 -->
+                <div class="chart-section">
+                    <h3>📊 使用频率分布</h3>
+                    <div id="freqChart">
+                    </div>
+                </div>
+                
+                <!-- 详细数据 -->
+                <div class="table-section">
+                    <h3>📋 详细数据</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>角色</th>
+                                <th>使用频率</th>
+                                <th>熟练度</th>
+                                <th>段位</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 空状态 -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <h3>暂无数据</h3>
+                <p>还没有人填写问卷，快去邀请同学吧！</p>
+                <a href="survey.html" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 10px;">📝 立即填写</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            dataUrl: 'https://raw.githubusercontent.com/nashjulv/openclaw-survey/main/data/survey-data.json'
+        };
+        
+        // 计算分数
+        function calculateScore(data) {
+            let score = 0;
+            if (data.usedAI && data.usedAI !== '没有') score += 1;
+            score += (data.purposes || []).length * 0.5;
+            if (data.frequency === '每天') score += 2;
+            else if (data.frequency === '每周') score += 1;
+            score += data.rating || 0;
+            return score;
+        }
+        
+        // 获取段位
+        function getRankInfo(score) {
+            if (score >= 8) return { rank: '王者', class: 'rank-king' };
+            if (score >= 6) return { rank: '钻石', class: 'rank-diamond' };
+            if (score >= 4) return { rank: '黄金', class: 'rank-gold' };
+            if (score >= 2) return { rank: '白银', class: 'rank-silver' };
+            return { rank: '青铜', class: 'rank-bronze' };
+        }
+        
+        // 加载数据
+        async function loadData() {
+            try {
+                // 优先从 localStorage 读取
+                let data = [];
+                const saved = localStorage.getItem('openclaw_survey_data');
+                if (saved) {
+                    try {
+                        data = JSON.parse(saved);
+                    } catch (e) {}
+                }
+                
+                // 尝试从 GitHub 读取
+                try {
+                    const response = await fetch(CONFIG.dataUrl + '?t=' + Date.now());
+                    if (response.ok) {
+                        const githubData = await response.json();
+                        if (githubData && githubData.length > 0) {
+                            data = githubData;
+                            localStorage.setItem('openclaw_survey_data', JSON.stringify(data));
+                        }
+                    }
+                } catch (e) {
+                    console.log('从 GitHub 读取失败，使用本地数据');
+                }
+                
+                if (data.length === 0) {
+                    showEmpty();
+                    return;
+                }
+                
+                renderStats(data);
+            } catch (e) {
+                console.error(e);
+                showEmpty();
+            }
+        }
+        
+        // 显示空状态
+        function showEmpty() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+        
+        // 渲染统计
+        function renderStats(data) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('statsContent').style.display = 'block';
+            
+            // 总体统计
+            document.getElementById('totalCount').textContent = data.length;
+            
+            const avgScore = (data.reduce((sum, d) => sum + calculateScore(d), 0) / data.length).toFixed(1);
+            document.getElementById('avgScore').textContent = avgScore;
+            
+            const avgRating = (data.reduce((sum, d) => sum + (d.rating || 0), 0) / data.length).toFixed(1);
+            document.getElementById('avgRating').textContent = avgRating;
+            
+            const rankOrder = ['王者', '钻石', '黄金', '白银', '青铜'];
+            const ranks = data.map(d => getRankInfo(calculateScore(d)).rank);
+            const topRank = ranks.sort((a, b) => rankOrder.indexOf(a) - rankOrder.indexOf(b))[0];
+            document.getElementById('topRank').textContent = topRank;
+            
+            // 段位分布
+            const rankCounts = {};
+            ranks.forEach(r => rankCounts[r] = (rankCounts[r] || 0) + 1);
+            
+            const rankDistHtml = ['王者', '钻石', '黄金', '白银', '青铜'].map(rank => {
+                const count = rankCounts[rank] || 0;
+                const className = 'rank-' + rank;
+                return `
+                    <div class="rank-item ${className}">
+                        <div class="count">${count}</div>
+                        <div>${rank}</div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('rankDist').innerHTML = rankDistHtml;
+            
+            // 职业分布
+            const roleCounts = {};
+            data.forEach(d => {
+                const role = d.role || '其他';
+                roleCounts[role] = (roleCounts[role] || 0) + 1;
+            });
+            
+            const maxRole = Math.max(...Object.values(roleCounts));
+            const roleChartHtml = Object.entries(roleCounts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([role, count]) => {
+                    const percent = (count / data.length * 100).toFixed(0);
+                    return `
+                        <div class="bar-chart">
+                            <div class="bar-label">
+                                <span>${role}</span>
+                                <span>${count}人 (${percent}%)</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: ${count / maxRole * 100}%">${count}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            document.getElementById('roleChart').innerHTML = roleChartHtml;
+            
+            // 使用频率分布
+            const freqCounts = {};
+            data.forEach(d => {
+                const freq = d.frequency || '偶尔';
+                freqCounts[freq] = (freqCounts[freq] || 0) + 1;
+            });
+            
+            const freqOrder = ['每天', '每周', '偶尔', '重度'];
+            const maxFreq = Math.max(...Object.values(freqCounts));
+            const freqChartHtml = freqOrder
+                .filter(f => freqCounts[f])
+                .map(freq => {
+                    const count = freqCounts[freq];
+                    const percent = (count / data.length * 100).toFixed(0);
+                    return `
+                        <div class="bar-chart">
+                            <div class="bar-label">
+                                <span>${freq}</span>
+                                <span>${count}人 (${percent}%)</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: ${count / maxFreq * 100}%">${count}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            document.getElementById('freqChart').innerHTML = freqChartHtml;
+            
+            // 详细数据表
+            const detailHtml = data.map(d => {
+                const score = calculateScore(d);
+                const rankInfo = getRankInfo(score);
+                return `
+                    <tr>
+                        <td>${d.name || '-'}</td>
+                        <td>${d.role || '-'}</td>
+                        <td>${d.frequency || '-'}</td>
+                        <td>${d.rating || 0}/5</td>
+                        <td><span class="rank-badge rank-${rankInfo.class}">${rankInfo.rank}</span></td>
+                    </tr>
+                `;
+            }).join('');
+            document.getElementById('detailTable').innerHTML = detailHtml;
+        }
+        
+        // 初始化
+        window.onload = loadData;
+    </script>
+</body>
+</html>
