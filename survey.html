@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClaw 课堂调查 · AI 应用能力诊断</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif;
@@ -34,31 +30,15 @@
             text-align: center;
         }
         
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 14px; }
         
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
+        .content { padding: 30px; }
         
-        .content {
-            padding: 30px;
-        }
+        .step { display: none; }
+        .step.active { display: block; }
         
-        .step {
-            display: none;
-        }
-        
-        .step.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 24px;
-        }
+        .form-group { margin-bottom: 24px; }
         
         .form-group label {
             display: block;
@@ -67,12 +47,9 @@
             color: #333;
         }
         
-        .form-group label span {
-            color: #667eea;
-        }
+        .form-group label span { color: #667eea; }
         
         .form-group input[type="text"],
-        .form-group input[type="number"],
         .form-group select,
         .form-group textarea {
             width: 100%;
@@ -106,20 +83,9 @@
             transition: all 0.3s;
         }
         
-        .checkbox-item:hover {
-            border-color: #667eea;
-        }
-        
-        .checkbox-item.selected {
-            border-color: #667eea;
-            background: #f0f0ff;
-        }
-        
-        .checkbox-item input {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-        }
+        .checkbox-item:hover { border-color: #667eea; }
+        .checkbox-item.selected { border-color: #667eea; background: #f0f0ff; }
+        .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; }
         
         .btn {
             display: inline-block;
@@ -133,6 +99,7 @@
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            text-decoration: none;
         }
         
         .btn:hover {
@@ -140,26 +107,11 @@
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
         
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
+        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-outline { background: white; color: #667eea; border: 2px solid #667eea; }
+        .btn-outline:hover { background: #f0f0ff; }
         
-        .btn-outline {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-        
-        .btn-outline:hover {
-            background: #f0f0ff;
-        }
-        
-        .rating {
-            display: flex;
-            gap: 10px;
-        }
+        .rating { display: flex; gap: 10px; }
         
         .rating .star {
             width: 40px;
@@ -191,9 +143,6 @@
         .result-box h3 {
             color: #667eea;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .result-table {
@@ -209,14 +158,8 @@
             border-bottom: 1px solid #e0e0e0;
         }
         
-        .result-table th {
-            background: #667eea;
-            color: white;
-        }
-        
-        .result-table tr:hover {
-            background: #f0f0ff;
-        }
+        .result-table th { background: #667eea; color: white; }
+        .result-table tr:hover { background: #f0f0ff; }
         
         .rank-badge {
             display: inline-block;
@@ -232,9 +175,7 @@
         .rank-diamond { background: #b9f2ff; color: #333; }
         .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
         
-        .growth-plan {
-            margin-top: 20px;
-        }
+        .growth-plan { margin-top: 20px; }
         
         .growth-phase {
             background: white;
@@ -244,116 +185,9 @@
             border-left: 4px solid #667eea;
         }
         
-        .growth-phase h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .growth-phase ul {
-            margin-left: 20px;
-            color: #555;
-        }
-        
-        .growth-phase li {
-            margin-bottom: 8px;
-        }
-        
-        .stats-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-        
-        .stats-summary h3 {
-            margin-bottom: 15px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-        
-        .qr-section {
-            text-align: center;
-            padding: 30px;
-            background: #f8f9ff;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-        
-        .qr-section h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .qr-placeholder {
-            width: 150px;
-            height: 150px;
-            background: white;
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #667eea;
-            font-size: 14px;
-        }
-        
-        .step-indicator {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .step-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e0e0e0;
-        }
-        
-        .step-dot.active {
-            background: #667eea;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e0e0e0;
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .growth-phase h4 { color: #667eea; margin-bottom: 10px; }
+        .growth-phase ul { margin-left: 20px; color: #555; }
+        .growth-phase li { margin-bottom: 8px; }
         
         .nav-links {
             display: flex;
@@ -370,30 +204,27 @@
             text-decoration: none;
             color: #667eea;
             font-weight: 600;
-            transition: all 0.3s;
         }
         
-        .nav-links a:hover {
-            background: #667eea;
-            color: white;
+        .nav-links a:hover { background: #667eea; color: white; }
+        
+        .submit-hint {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .submit-hint p {
+            margin-bottom: 10px;
+            color: #856404;
         }
         
         @media (max-width: 600px) {
-            .checkbox-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .header h1 {
-                font-size: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+            .checkbox-group { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -405,20 +236,18 @@
         </div>
         
         <div class="content">
-            <!-- 导航链接 -->
             <div class="nav-links">
                 <a href="survey.html">📝 填写问卷</a>
                 <a href="stats.html">📊 查看统计</a>
             </div>
             
-            <!-- 步骤指示器 -->
-            <div class="step-indicator">
-                <div class="step-dot active" id="dot1"></div>
-                <div class="step-dot" id="dot2"></div>
-                <div class="step-dot" id="dot3"></div>
+            <div class="step-indicator" style="display: flex; justify-content: center; gap: 30px; margin-bottom: 30px;">
+                <div class="step-dot active" id="dot1" style="width: 12px; height: 12px; border-radius: 50%; background: #667eea;"></div>
+                <div class="step-dot" id="dot2" style="width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0;"></div>
+                <div class="step-dot" id="dot3" style="width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0;"></div>
             </div>
             
-            <!-- 步骤1: 基础信息 -->
+            <!-- 步骤1 -->
             <div class="step active" id="step1">
                 <h2 style="margin-bottom: 20px; color: #333;">📝 第一部分：基本信息</h2>
                 
@@ -448,7 +277,7 @@
                 </div>
             </div>
             
-            <!-- 步骤2: 使用情况 -->
+            <!-- 步骤2 -->
             <div class="step" id="step2">
                 <h2 style="margin-bottom: 20px; color: #333;">🤖 第二部分：使用情况</h2>
                 
@@ -515,7 +344,7 @@
                 </div>
             </div>
             
-            <!-- 步骤3: 期望与目标 -->
+            <!-- 步骤3 -->
             <div class="step" id="step3">
                 <h2 style="margin-bottom: 20px; color: #333;">🎯 第三部分：期望与目标</h2>
                 
@@ -538,132 +367,65 @@
                 
                 <div class="btn-group">
                     <button class="btn btn-outline" onclick="nextStep(2)">← 上一步</button>
-                    <button class="btn" onclick="generateReport()">🎉 生成分析报告</button>
+                    <button class="btn" onclick="generateReport()">🎉 生成报告</button>
                 </div>
             </div>
             
-            <!-- 步骤4: 结果展示 -->
+            <!-- 结果展示 -->
             <div class="step" id="step4">
                 <h2 style="margin-bottom: 20px; color: #333;">📊 你的诊断报告</h2>
                 
-                <!-- 统计摘要 -->
-                <div class="stats-summary" id="statsSummary">
-                    <h3>📈 全员统计</h3>
-                    <p style="font-size: 13px; opacity: 0.9;">已有 <strong id="totalCount">0</strong> 人参与调查</p>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-number" id="avgRating">-</div>
-                            <div class="stat-label">平均熟练度</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number" id="avgScore">-</div>
-                            <div class="stat-label">平均分数</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number" id="topRank">-</div>
-                            <div class="stat-label">最高段位</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 段位展示 -->
                 <div class="result-box">
                     <h3>🏆 你的 AI 段位</h3>
                     <div style="text-align: center; padding: 20px;">
                         <span class="rank-badge rank-bronze" id="rankBadge" style="font-size: 18px; padding: 10px 24px;">青铜玩家</span>
-                        <p style="margin-top: 15px; color: #666;" id="rankDesc">刚刚起步，继续探索 AI 的奥秘吧！</p>
+                        <p style="margin-top: 15px; color: #666;" id="rankDesc">刚刚起步</p>
                     </div>
                 </div>
                 
-                <!-- 分析表格 -->
                 <div class="result-box">
                     <h3>📈 能力分析</h3>
                     <table class="result-table">
                         <thead>
-                            <tr>
-                                <th>维度</th>
-                                <th>评估</th>
-                                <th>建议</th>
-                            </tr>
+                            <tr><th>维度</th><th>评估</th><th>建议</th></tr>
                         </thead>
-                        <tbody id="analysisTable">
-                        </tbody>
+                        <tbody id="analysisTable"></tbody>
                     </table>
                 </div>
                 
-                <!-- 成长计划 -->
                 <div class="result-box">
                     <h3>🚀 成长计划</h3>
-                    <div class="growth-plan" id="growthPlan">
-                    </div>
+                    <div class="growth-plan" id="growthPlan"></div>
                 </div>
                 
-                <!-- 分享区域 -->
-                <div class="qr-section">
-                    <h3>📱 分享给同学一起测</h3>
-                    <div class="qr-placeholder">
-                        点击右上角 ···<br>分享到微信
-                    </div>
-                    <p style="color: #666; font-size: 13px;">长按保存结果图片</p>
+                <div class="submit-hint">
+                    <p>💡 点击下方按钮提交问卷到 GitHub</p>
+                    <p style="font-size: 12px; color: #666;">提交后可在统计页面查看汇总数据</p>
+                    <a id="submitLink" href="#" target="_blank" class="btn">📤 提交到 GitHub</a>
                 </div>
                 
                 <div class="btn-group">
                     <button class="btn btn-outline" onclick="resetForm()">🔄 重新填写</button>
-                    <button class="btn" onclick="copyResult()">📋 复制结果</button>
-                </div>
-            </div>
-            
-            <!-- 加载状态 -->
-            <div class="step" id="stepLoading">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>正在生成报告...</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 配置
-        const CONFIG = {
-            dataUrl: 'https://raw.githubusercontent.com/nashjulv/openclaw-survey/main/data/survey-data.json',
-            submitUrl: 'https://api.github.com/repos/nashjulv/openclaw-survey/dispatches',
-            token: '' // 需要配置 GitHub Token 才能提交
-        };
-        
-        // 全局变量
         let currentStep = 1;
-        let allData = [];
-        let userData = {
-            name: '',
-            role: '',
-            usedAI: '',
-            purposes: [],
-            frequency: '',
-            rating: 0,
-            goal: '',
-            comment: '',
-            timestamp: ''
-        };
+        let userData = { name: '', role: '', usedAI: '', purposes: [], frequency: '', rating: 0, goal: '', comment: '' };
         
-        // 步骤切换
         function nextStep(step) {
-            // 验证必填
             if (step > currentStep) {
                 if (currentStep === 1) {
                     userData.name = document.getElementById('name').value.trim();
                     userData.role = document.getElementById('role').value;
-                    if (!userData.name || !userData.role) {
-                        alert('请填写必填信息~');
-                        return;
-                    }
+                    if (!userData.name || !userData.role) { alert('请填写必填信息~'); return; }
                 } else if (currentStep === 2) {
                     userData.usedAI = document.getElementById('usedAI').value;
                     userData.frequency = document.getElementById('frequency').value;
                     const purposes = [];
-                    document.querySelectorAll('#purposeGroup input:checked').forEach(cb => {
-                        purposes.push(cb.value);
-                    });
+                    document.querySelectorAll('#purposeGroup input:checked').forEach(cb => purposes.push(cb.value));
                     userData.purposes = purposes;
                 }
             }
@@ -672,97 +434,25 @@
             document.getElementById('step' + step).classList.add('active');
             
             document.querySelectorAll('.step-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i < step);
+                dot.style.background = i < step ? '#667eea' : '#e0e0e0';
             });
             
             currentStep = step;
-            
-            if (step === 4) {
-                generateReportData();
-            }
         }
         
-        // 多选框
         function toggleCheck(el) {
             el.classList.toggle('selected');
-            const cb = el.querySelector('input');
-            cb.checked = !cb.checked;
+            el.querySelector('input').checked = !el.querySelector('input').checked;
         }
         
-        // 评分
         function setRating(val) {
             userData.rating = val;
-            document.querySelectorAll('#rating .star').forEach((star, i) => {
-                star.classList.toggle('active', i < val);
-            });
+            document.querySelectorAll('#rating .star').forEach((star, i) => star.classList.toggle('active', i < val));
         }
         
-        // 生成报告
-        function generateReport() {
-            userData.goal = document.getElementById('goal').value;
-            userData.comment = document.getElementById('comment').value;
-            userData.timestamp = new Date().toISOString();
-            
-            // 显示加载
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('stepLoading').classList.add('active');
-            
-            // 加载现有数据
-            loadAllData().then(() => {
-                // 保存当前数据
-                saveUserData();
-                nextStep(4);
-            });
-        }
-        
-        // 加载所有数据
-        async function loadAllData() {
-            try {
-                const response = await fetch(CONFIG.dataUrl + '?t=' + Date.now());
-                if (response.ok) {
-                    allData = await response.json();
-                }
-            } catch (e) {
-                console.log('首次使用，暂无历史数据');
-                allData = [];
-            }
-        }
-        
-        // 保存用户数据
-        function saveUserData() {
-            // 添加到数据列表
-            allData.push(userData);
-            
-            // 更新统计显示
-            updateStatsSummary();
-            
-            // 保存到 localStorage
-            localStorage.setItem('openclaw_survey_data', JSON.stringify(allData));
-        }
-        
-        // 更新统计摘要
-        function updateStatsSummary() {
-            const count = allData.length;
-            document.getElementById('totalCount').textContent = count;
-            
-            if (count > 0) {
-                const avgRating = (allData.reduce((sum, d) => sum + (d.rating || 0), 0) / count).toFixed(1);
-                document.getElementById('avgRating').textContent = avgRating;
-                
-                const avgScore = (allData.reduce((sum, d) => sum + calculateScore(d), 0) / count).toFixed(1);
-                document.getElementById('avgScore').textContent = avgScore;
-                
-                const topRanks = allData.map(d => getRankInfo(calculateScore(d)).rank);
-                const rankOrder = ['王者', '钻石', '黄金', '白银', '青铜'];
-                const topRank = topRanks.sort((a, b) => rankOrder.indexOf(a) - rankOrder.indexOf(b))[0];
-                document.getElementById('topRank').textContent = topRank;
-            }
-        }
-        
-        // 计算分数
         function calculateScore(data) {
             let score = 0;
-            if (data.usedAI !== '没有') score += 1;
+            if (data.usedAI && data.usedAI !== '没有') score += 1;
             score += (data.purposes || []).length * 0.5;
             if (data.frequency === '每天') score += 2;
             else if (data.frequency === '每周') score += 1;
@@ -770,17 +460,18 @@
             return score;
         }
         
-        // 获取段位信息
         function getRankInfo(score) {
-            if (score >= 8) return { rank: '王者', class: 'rank-king', desc: 'AI 大神！你是重度用户，已深度掌握 AI 技能！' };
-            if (score >= 6) return { rank: '钻石', class: 'rank-diamond', desc: '熟练玩家，你已经能高效使用 AI 工具！' };
-            if (score >= 4) return { rank: '黄金', class: 'rank-gold', desc: '进阶玩家，继续探索更多 AI 应用场景吧！' };
-            if (score >= 2) return { rank: '白银', class: 'rank-silver', desc: '入门玩家，你已经踏上了 AI 学习之路！' };
-            return { rank: '青铜', class: 'rank-bronze', desc: '刚刚起步，继续探索 AI 的奥秘吧！' };
+            if (score >= 8) return { rank: '王者', class: 'rank-king', desc: 'AI 大神！' };
+            if (score >= 6) return { rank: '钻石', class: 'rank-diamond', desc: '熟练玩家！' };
+            if (score >= 4) return { rank: '黄金', class: 'rank-gold', desc: '进阶玩家！' };
+            if (score >= 2) return { rank: '白银', class: 'rank-silver', desc: '入门玩家！' };
+            return { rank: '青铜', class: 'rank-bronze', desc: '刚刚起步！' };
         }
         
-        // 生成报告数据
-        function generateReportData() {
+        function generateReport() {
+            userData.goal = document.getElementById('goal').value;
+            userData.comment = document.getElementById('comment').value;
+            
             const score = calculateScore(userData);
             const rankInfo = getRankInfo(score);
             
@@ -788,104 +479,56 @@
             document.getElementById('rankBadge').className = 'rank-badge ' + rankInfo.class;
             document.getElementById('rankDesc').textContent = rankInfo.desc;
             
-            // 分析表格
             const analysisData = [
-                {
-                    dim: '应用广度',
-                    eval: userData.purposes.length >= 4 ? '优秀' : (userData.purposes.length >= 2 ? '良好' : '待提升'),
-                    suggestion: '尝试更多使用场景，如文档处理、日程管理等'
-                },
-                {
-                    dim: '使用频率',
-                    eval: userData.frequency === '每天' ? '高频' : (userData.frequency === '每周' ? '一般' : '较低'),
-                    suggestion: '建议将 AI 融入日常工作，形成使用习惯'
-                },
-                {
-                    dim: '熟练程度',
-                    eval: userData.rating >= 4 ? '熟练' : (userData.rating >= 3 ? '一般' : '初学'),
-                    suggestion: '多尝试复杂任务，学习高级提示词技巧'
-                },
-                {
-                    dim: '目标聚焦',
-                    eval: userData.goal ? '明确' : '待定',
-                    suggestion: '设定具体学习目标，提升更有方向'
-                }
+                { dim: '应用广度', eval: userData.purposes.length >= 4 ? '优秀' : (userData.purposes.length >= 2 ? '良好' : '待提升'), suggestion: '尝试更多使用场景' },
+                { dim: '使用频率', eval: userData.frequency === '每天' ? '高频' : (userData.frequency === '每周' ? '一般' : '较低'), suggestion: '建议形成使用习惯' },
+                { dim: '熟练程度', eval: userData.rating >= 4 ? '熟练' : (userData.rating >= 3 ? '一般' : '初学'), suggestion: '多尝试复杂任务' },
+                { dim: '目标聚焦', eval: userData.goal ? '明确' : '待定', suggestion: '设定具体学习目标' }
             ];
             
-            let tableHtml = '';
-            analysisData.forEach(item => {
-                tableHtml += `<tr><td>${item.dim}</td><td>${item.eval}</td><td>${item.suggestion}</td></tr>`;
-            });
-            document.getElementById('analysisTable').innerHTML = tableHtml;
+            document.getElementById('analysisTable').innerHTML = analysisData.map(item => 
+                `<tr><td>${item.dim}</td><td>${item.eval}</td><td>${item.suggestion}</td></tr>`
+            ).join('');
             
-            // 成长计划
             const roleSuggestions = {
-                '学生': ['使用 AI 辅助学习', '整理学习笔记', '练习编程技能'],
-                '教师': ['制作教学材料', '生成教案', '自动批改作业'],
-                '开发者': ['代码审查辅助', 'API 文档生成', 'Bug 分析'],
-                '培训师': ['课程内容生成', '学员问题解答', '培训材料制作'],
-                '加密课程学员': ['学习路线规划', '技术文档解读', '代码示例分析'],
-                '矿工': ['运维脚本生成', '日志分析', '监控告警配置'],
-                '投资者': ['行业报告分析', '数据可视化', '尽调辅助'],
-                '企业家': ['商业计划书', '市场分析', '团队管理建议'],
-                '其他': ['提升工作效率', '学习新技能', '自动化日常任务']
+                '学生': ['使用 AI 辅助学习', '整理学习笔记'],
+                '教师': ['制作教学材料', '生成教案'],
+                '开发者': ['代码审查辅助', 'API 文档生成'],
+                '其他': ['提升工作效率', '学习新技能']
             };
             
-            const planHtml = `
-                <div class="growth-phase">
-                    <h4>🌱 短期（1个月）</h4>
-                    <ul>
-                        <li>熟悉 OpenClaw 基本操作</li>
-                        <li>设置每日使用提醒</li>
-                        <li>学习 2-3 个实用技巧</li>
-                    </ul>
-                </div>
-                <div class="growth-phase">
-                    <h4>🌿 中期（1-3个月）</h4>
-                    <ul>
-                        <li>将 AI 融入工作流程</li>
-                        <li>学习提示词优化技巧</li>
-                        <li>${roleSuggestions[userData.role]?.[0] || '完成一个完整项目'}</li>
-                    </ul>
-                </div>
-                <div class="growth-phase">
-                    <h4>🌳 长期（3-6个月）</h4>
-                    <ul>
-                        <li>成为团队 AI 顾问</li>
-                        <li>分享学习心得</li>
-                        <li>探索高级自动化</li>
-                    </ul>
-                </div>
+            document.getElementById('growthPlan').innerHTML = `
+                <div class="growth-phase"><h4>🌱 短期（1个月）</h4><ul><li>熟悉 OpenClaw 基本操作</li><li>学习 2-3 个实用技巧</li></ul></div>
+                <div class="growth-phase"><h4>🌿 中期（1-3个月）</h4><ul><li>将 AI 融入工作流程</li><li>${roleSuggestions[userData.role]?.[0] || '完成一个完整项目'}</li></ul></div>
             `;
             
-            document.getElementById('growthPlan').innerHTML = planHtml;
-        }
-        
-        // 复制结果
-        function copyResult() {
-            const result = `
-🦐 OpenClaw 课堂调查结果
+            // 生成 GitHub Issue 链接
+            const title = encodeURIComponent(`📝 调查: ${userData.name} - ${userData.role}`);
+            const body = encodeURIComponent(`
+## 基本信息
+- **称呼**: ${userData.name}
+- **角色**: ${userData.role}
 
-📛 姓名：${userData.name}
-🎭 角色：${userData.role}
-🤖 使用情况：${userData.usedAI}
-📊 使用频率：${userData.frequency}
-⭐ 熟练度：${userData.rating}/5
-🎯 目标：${userData.goal}
+## 使用情况
+- **之前用过 AI**: ${userData.usedAI}
+- **使用目的**: ${userData.purposes.join(', ') || '未选择'}
+- **使用频率**: ${userData.frequency}
+- **熟练度**: ${userData.rating}/5
 
-🏆 段位：${document.getElementById('rankBadge').textContent}
+## 期望目标
+- **成长目标**: ${userData.goal}
+- **其他**: ${userData.comment || '无'}
 
-📈 已有 ${allData.length} 人参与调查
-
-——来自 OpenClaw 课堂调查小程序
-            `;
+---
+段位: ${rankInfo.rank} | 分数: ${score.toFixed(1)}
+            `.trim());
             
-            navigator.clipboard.writeText(result).then(() => {
-                alert('结果已复制到剪贴板！');
-            });
+            const issueUrl = `https://github.com/nashjulv/openclaw-survey/issues/new?labels=survey&title=${title}&body=${body}`;
+            document.getElementById('submitLink').href = issueUrl;
+            
+            nextStep(4);
         }
         
-        // 重置表单
         function resetForm() {
             if (confirm('确定要重新填写吗？')) {
                 document.getElementById('name').value = '';
@@ -902,17 +545,6 @@
                 nextStep(1);
             }
         }
-        
-        // 页面加载
-        window.onload = function() {
-            // 尝试加载已有数据
-            const saved = localStorage.getItem('openclaw_survey_data');
-            if (saved) {
-                try {
-                    allData = JSON.parse(saved);
-                } catch (e) {}
-            }
-        };
     </script>
 </body>
 </html>
