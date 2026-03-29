@@ -602,6 +602,15 @@
             });
         }
         
+        // 生成报告（按钮点击）
+        function generateReport() {
+            // 先保存第三步的数据
+            userData.goal = document.getElementById('goal').value;
+            userData.comment = document.getElementById('comment').value;
+            // 跳转到结果页
+            nextStep(4);
+        }
+        
         // 生成报告数据
         function generateReportData() {
             // 获取目标
