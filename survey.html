@@ -3,184 +3,560 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw 课堂调查</title>
+    <title>OpenClaw 课堂调查 · AI 应用能力诊断</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; text-align: center; }
-        .header h1 { font-size: 22px; margin-bottom: 5px; }
-        .content { padding: 25px; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        
+        .content { padding: 30px; }
+        
+        .step { display: none; }
+        .step.active { display: block; }
+        
+        .form-group { margin-bottom: 24px; }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
         .form-group label span { color: #667eea; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: #667eea; }
-        .checkbox-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        .checkbox-item { display: flex; align-items: center; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-item:hover { border-color: #667eea; }
         .checkbox-item.selected { border-color: #667eea; background: #f0f0ff; }
-        .checkbox-item input { margin-right: 8px; }
+        .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-outline { background: white; color: #667eea; border: 2px solid #667eea; }
+        .btn-outline:hover { background: #f0f0ff; }
+        
         .rating { display: flex; gap: 10px; }
-        .rating .star { width: 36px; height: 36px; border: 2px solid #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
-        .rating .star.active { border-color: #ffd700; background: #fff9e6; color: #ffd700; }
-        .btn { display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .result-box { background: #f8f9ff; border-radius: 12px; padding: 20px; text-align: center; }
-        .result-box h3 { color: #667eea; margin-bottom: 15px; }
-        .rank-badge { display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 16px; font-weight: 600; background: #cd7f32; color: white; }
-        .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .rank-diamond { background: #b9f2ff; color: #333; }
-        .rank-gold { background: #ffd700; color: #333; }
+        
+        .rating .star {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .rating .star:hover,
+        .rating .star.active {
+            border-color: #ffd700;
+            background: #fff9e6;
+            color: #ffd700;
+        }
+        
+        .result-box {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .result-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .result-table th,
+        .result-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-table th { background: #667eea; color: white; }
+        .result-table tr:hover { background: #f0f0ff; }
+        
+        .rank-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .rank-bronze { background: #cd7f32; color: white; }
         .rank-silver { background: #c0c0c0; color: #333; }
-        .success-msg { background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; }
+        .rank-gold { background: #ffd700; color: #333; }
+        .rank-diamond { background: #b9f2ff; color: #333; }
+        .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        .growth-plan { margin-top: 20px; }
+        
+        .growth-phase {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .growth-phase h4 { color: #667eea; margin-bottom: 10px; }
+        .growth-phase ul { margin-left: 20px; color: #555; }
+        .growth-phase li { margin-bottom: 8px; }
+        
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: #f0f0ff;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .nav-links a:hover { background: #667eea; color: white; }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        
+        .step-dot.active { background: #667eea; }
+        
+        @media (max-width: 600px) {
+            .checkbox-group { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🦐 OpenClaw 课堂调查</h1>
-            <p>AI 应用能力诊断</p>
+            <p>AI 应用能力诊断 · 个性化成长计划</p>
         </div>
-        <div class="content" id="formContent">
-            <div class="form-group">
-                <label>称呼 <span>*</span></label>
-                <input type="text" id="name" placeholder="请输入名字">
+        
+        <div class="content">
+            <div class="nav-links">
+                <a href="survey.html">📝 填写问卷</a>
+                <a href="stats.html">📊 查看统计</a>
             </div>
-            <div class="form-group">
-                <label>角色 <span>*</span></label>
-                <select id="role">
-                    <option value="">请选择...</option>
-                    <option value="学生">学生</option>
-                    <option value="教师">教师</option>
-                    <option value="开发者">开发者</option>
-                    <option value="其他">其他</option>
-                </select>
+            
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1"></div>
+                <div class="step-dot" id="dot2"></div>
+                <div class="step-dot" id="dot3"></div>
             </div>
-            <div class="form-group">
-                <label>之前用过 AI 吗？</label>
-                <select id="usedAI">
-                    <option value="没有">没有</option>
-                    <option value="ChatGPT">ChatGPT</option>
-                    <option value="Claude">Claude</option>
-                    <option value="其他">其他</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>使用目的</label>
-                <div class="checkbox-group" id="purposeGroup">
-                    <label class="checkbox-item" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked"><input type="checkbox" value="查资料"> 查资料</label>
-                    <label class="checkbox-item" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked"><input type="checkbox" value="写代码"> 写代码</label>
-                    <label class="checkbox-item" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked"><input type="checkbox" value="聊天问答"> 聊天问答</label>
-                    <label class="checkbox-item" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked"><input type="checkbox" value="文档处理"> 文档处理</label>
+            
+            <!-- 步骤1 -->
+            <div class="step active" id="step1">
+                <h2 style="margin-bottom: 20px; color: #333;">📝 第一部分：基本信息</h2>
+                
+                <div class="form-group">
+                    <label>称呼 <span>*</span></label>
+                    <input type="text" id="name" placeholder="请输入你的名字">
+                </div>
+                
+                <div class="form-group">
+                    <label>年级/职业 <span>*</span></label>
+                    <select id="role">
+                        <option value="">请选择...</option>
+                        <option value="学生">学生</option>
+                        <option value="教师">教师</option>
+                        <option value="开发者">开发者</option>
+                        <option value="培训师">培训师</option>
+                        <option value="加密课程学员">加密课程学员</option>
+                        <option value="矿工">矿工</option>
+                        <option value="投资者">投资者</option>
+                        <option value="企业家">企业家</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn" onclick="nextStep(2)">下一步 →</button>
                 </div>
             </div>
-            <div class="form-group">
-                <label>使用频率</label>
-                <select id="frequency">
-                    <option value="偶尔">偶尔</option>
-                    <option value="每周">每周</option>
-                    <option value="每天">每天</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>熟练度 (1-5)</label>
-                <div class="rating" id="rating">
-                    <div class="star" onclick="setRating(1)">1</div>
-                    <div class="star" onclick="setRating(2)">2</div>
-                    <div class="star" onclick="setRating(3)">3</div>
-                    <div class="star" onclick="setRating(4)">4</div>
-                    <div class="star" onclick="setRating(5)">5</div>
+            
+            <!-- 步骤2 -->
+            <div class="step" id="step2">
+                <h2 style="margin-bottom: 20px; color: #333;">🤖 第二部分：使用情况</h2>
+                
+                <div class="form-group">
+                    <label>之前使用过 AI 助手吗？</label>
+                    <select id="usedAI">
+                        <option value="没有">没有</option>
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Claude">Claude</option>
+                        <option value="文心一言">文心一言</option>
+                        <option value="通义千问">通义千问</option>
+                        <option value="多个">多个</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>使用 OpenClaw 的主要目的（可多选）</label>
+                    <div class="checkbox-group" id="purposeGroup">
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="查资料"> 查资料
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="写代码"> 写代码
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="聊天问答"> 聊天问答
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="文档处理"> 文档处理
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="日程管理"> 日程管理
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="自动化任务"> 自动化任务
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>使用频率</label>
+                    <select id="frequency">
+                        <option value="偶尔">偶尔用用</option>
+                        <option value="每周">每周几次</option>
+                        <option value="每天">每天使用</option>
+                        <option value="重度">重度依赖</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>熟练程度评分 (1-5分)</label>
+                    <div class="rating" id="rating">
+                        <div class="star" onclick="setRating(1)">1</div>
+                        <div class="star" onclick="setRating(2)">2</div>
+                        <div class="star" onclick="setRating(3)">3</div>
+                        <div class="star" onclick="setRating(4)">4</div>
+                        <div class="star" onclick="setRating(5)">5</div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="nextStep(1)">← 上一步</button>
+                    <button class="btn" onclick="nextStep(3)">下一步 →</button>
                 </div>
             </div>
-            <button class="btn" onclick="generateReport()">生成报告</button>
-        </div>
-        <div class="content" id="resultContent" style="display:none;">
-            <div class="success-msg">✅ 报告已生成！</div>
-            <div class="result-box">
-                <h3>🏆 你的段位</h3>
-                <span class="rank-badge" id="rankBadge">青铜</span>
-                <p id="rankDesc" style="margin-top:10px;color:#666;">刚刚起步</p>
+            
+            <!-- 步骤3 -->
+            <div class="step" id="step3">
+                <h2 style="margin-bottom: 20px; color: #333;">🎯 第三部分：期望与目标</h2>
+                
+                <div class="form-group">
+                    <label>你的成长目标</label>
+                    <select id="goal">
+                        <option value="提升效率">提升工作效率</option>
+                        <option value="学习新技术">学习新技术</option>
+                        <option value="自动化日常">自动化日常任务</option>
+                        <option value="辅助决策">辅助决策分析</option>
+                        <option value="内容创作">内容创作/写作</option>
+                        <option value="深入研究">深入研究 AI 原理</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>其他想说的话（可选）</label>
+                    <textarea id="comment" rows="3" placeholder="有什么建议或想法都可以说~"></textarea>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="nextStep(2)">← 上一步</button>
+                    <button class="btn" onclick="generateReport()">🎉 生成分析报告</button>
+                </div>
             </div>
-            <div style="margin-top:20px;">
-                <button class="btn" onclick="sendEmail()">📧 发送到邮箱</button>
-            </div>
-            <div style="margin-top:15px;">
-                <button class="btn" onclick="copyResult()" style="background:#6c757d;">📋 复制结果</button>
-            </div>
-            <div style="margin-top:15px;">
-                <button class="btn" onclick="resetForm()" style="background:#28a745;">🔄 重新填写</button>
+            
+            <!-- 步骤4: 结果展示 -->
+            <div class="step" id="step4">
+                <h2 style="margin-bottom: 20px; color: #333;">📊 你的诊断报告</h2>
+                
+                <!-- 段位展示 -->
+                <div class="result-box">
+                    <h3>🏆 你的 AI 段位</h3>
+                    <div style="text-align: center; padding: 20px;">
+                        <span class="rank-badge rank-bronze" id="rankBadge" style="font-size: 18px; padding: 10px 24px;">青铜玩家</span>
+                        <p style="margin-top: 15px; color: #666;" id="rankDesc">刚刚起步，继续探索 AI 的奥秘吧！</p>
+                    </div>
+                </div>
+                
+                <!-- 分析表格 -->
+                <div class="result-box">
+                    <h3>📈 能力分析</h3>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>维度</th>
+                                <th>评估</th>
+                                <th>建议</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analysisTable">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 成长计划 -->
+                <div class="result-box">
+                    <h3>🚀 成长计划</h3>
+                    <div class="growth-plan" id="growthPlan">
+                    </div>
+                </div>
+                
+                <!-- 复制结果 -->
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="copyResult()">📋 复制结果</button>
+                    <button class="btn btn-outline" onclick="resetForm()">🔄 重新填写</button>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        let userData = {name:'',role:'',usedAI:'',purposes:[],frequency:'',rating:0};
-        function setRating(v){userData.rating=v;document.querySelectorAll('.rating .star').forEach((s,i)=>s.classList.toggle('active',i<v));}
-        function calculateScore(){
-            let s=0;
-            if(userData.usedAI!=='没有')s+=1;
-            s+=userData.purposes.length*0.5;
-            if(userData.frequency==='每天')s+=2;else if(userData.frequency==='每周')s+=1;
-            s+=userData.rating;
-            return s;
+        let currentStep = 1;
+        let userData = {
+            name: '', role: '', usedAI: '', purposes: [], frequency: '',
+            rating: 0, goal: '', comment: ''
+        };
+        
+        function nextStep(step) {
+            if (step > currentStep) {
+                if (currentStep === 1) {
+                    userData.name = document.getElementById('name').value.trim();
+                    userData.role = document.getElementById('role').value;
+                    if (!userData.name || !userData.role) { alert('请填写必填信息~'); return; }
+                } else if (currentStep === 2) {
+                    userData.usedAI = document.getElementById('usedAI').value;
+                    userData.frequency = document.getElementById('frequency').value;
+                    userData.purposes = [];
+                    document.querySelectorAll('#purposeGroup input:checked').forEach(cb => userData.purposes.push(cb.value));
+                }
+            }
+            
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            document.querySelectorAll('.step-dot').forEach((dot, i) => dot.classList.toggle('active', i < step));
+            currentStep = step;
+            
+            if (step === 4) generateReportData();
         }
-        function getRank(s){
-            if(s>=8)return{r:'王者',c:'rank-king',d:'AI大神！'};
-            if(s>=6)return{r:'钻石',c:'rank-diamond',d:'熟练玩家！'};
-            if(s>=4)return{r:'黄金',c:'rank-gold',d:'进阶玩家！'};
-            if(s>=2)return{r:'白银',c:'rank-silver',d:'入门玩家！'};
-            return{r:'青铜',c:'','d':'刚刚起步！'};
+        
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            el.querySelector('input').checked = !el.querySelector('input').checked;
         }
-        function generateReport(){
-            userData.name=document.getElementById('name').value.trim();
-            userData.role=document.getElementById('role').value;
-            if(!userData.name||!userData.role){alert('请填写必填项');return;}
-            userData.usedAI=document.getElementById('usedAI').value;
-            userData.frequency=document.getElementById('frequency').value;
-            userData.purposes=[];
-            document.querySelectorAll('#purposeGroup input:checked').forEach(i=>userData.purposes.push(i.value));
-            let score=calculateScore(),rk=getRank(score);
-            document.getElementById('rankBadge').textContent=rk.r;
-            document.getElementById('rankBadge').className='rank-badge '+rk.c;
-            document.getElementById('rankDesc').textContent=rk.d;
-            document.getElementById('formContent').style.display='none';
-            document.getElementById('resultContent').style.display='block';
+        
+        function setRating(val) {
+            userData.rating = val;
+            document.querySelectorAll('#rating .star').forEach((star, i) => star.classList.toggle('active', i < val));
         }
-        function sendEmail(){
-            let score=calculateScore(),rk=getRank(score);
-            let body=`🦐 OpenClaw 课堂调查
+        
+        function generateReport() {
+            userData.goal = document.getElementById('goal').value;
+            userData.comment = document.getElementById('comment').value;
+            nextStep(4);
+        }
+        
+        function calculateScore() {
+            let score = 0;
+            if (userData.usedAI !== '没有') score += 1;
+            score += userData.purposes.length * 0.5;
+            if (userData.frequency === '每天') score += 2;
+            else if (userData.frequency === '每周') score += 1;
+            score += userData.rating;
+            return score;
+        }
+        
+        function getRankInfo(score) {
+            if (score >= 8) return { rank: '王者', class: 'rank-king', desc: 'AI 大神！你是重度用户，已深度掌握 AI 技能！' };
+            if (score >= 6) return { rank: '钻石', class: 'rank-diamond', desc: '熟练玩家，你已经能高效使用 AI 工具！' };
+            if (score >= 4) return { rank: '黄金', class: 'rank-gold', desc: '进阶玩家，继续探索更多 AI 应用场景吧！' };
+            if (score >= 2) return { rank: '白银', class: 'rank-silver', desc: '入门玩家，你已经踏上了 AI 学习之路！' };
+            return { rank: '青铜', class: 'rank-bronze', desc: '刚刚起步，继续探索 AI 的奥秘吧！' };
+        }
+        
+        function generateReportData() {
+            const score = calculateScore();
+            const rankInfo = getRankInfo(score);
+            
+            document.getElementById('rankBadge').textContent = rankInfo.rank + ' · ' + userData.name;
+            document.getElementById('rankBadge').className = 'rank-badge ' + rankInfo.class;
+            document.getElementById('rankDesc').textContent = rankInfo.desc;
+            
+            const analysisData = [
+                { dim: '应用广度', eval: userData.purposes.length >= 4 ? '优秀' : (userData.purposes.length >= 2 ? '良好' : '待提升'), suggestion: '尝试更多使用场景' },
+                { dim: '使用频率', eval: userData.frequency === '每天' ? '高频' : (userData.frequency === '每周' ? '一般' : '较低'), suggestion: '建议形成使用习惯' },
+                { dim: '熟练程度', eval: userData.rating >= 4 ? '熟练' : (userData.rating >= 3 ? '一般' : '初学'), suggestion: '多尝试复杂任务' },
+                { dim: '目标聚焦', eval: userData.goal ? '明确' : '待定', suggestion: '设定具体学习目标' }
+            ];
+            
+            document.getElementById('analysisTable').innerHTML = analysisData.map(item => 
+                `<tr><td>${item.dim}</td><td>${item.eval}</td><td>${item.suggestion}</td></tr>`
+            ).join('');
+            
+            const roleSuggestions = {
+                '学生': ['使用 AI 辅助学习', '整理学习笔记', '练习编程技能'],
+                '教师': ['制作教学材料', '生成教案', '自动批改作业'],
+                '开发者': ['代码审查辅助', 'API 文档生成', 'Bug 分析'],
+                '培训师': ['课程内容生成', '学员问题解答', '培训材料制作'],
+                '加密课程学员': ['学习路线规划', '技术文档解读', '代码示例分析'],
+                '矿工': ['运维脚本生成', '日志分析', '监控告警配置'],
+                '投资者': ['行业报告分析', '数据可视化', '尽调辅助'],
+                '企业家': ['商业计划书', '市场分析', '团队管理建议'],
+                '其他': ['提升工作效率', '学习新技能', '自动化日常任务']
+            };
+            
+            document.getElementById('growthPlan').innerHTML = `
+                <div class="growth-phase"><h4>🌱 短期（1个月）</h4><ul><li>熟悉 OpenClaw 基本操作</li><li>设置每日使用提醒</li><li>学习 2-3 个实用技巧</li></ul></div>
+                <div class="growth-phase"><h4>🌿 中期（1-3个月）</h4><ul><li>将 AI 融入工作流程</li><li>学习提示词优化技巧</li><li>${roleSuggestions[userData.role]?.[0] || '完成一个完整项目'}</li></ul></div>
+                <div class="growth-phase"><h4>🌳 长期（3-6个月）</h4><ul><li>成为团队 AI 顾问</li><li>分享学习心得</li><li>探索高级自动化</li></ul></div>
+            `;
+            
+            // 保存到 localStorage
+            localStorage.setItem('openclaw_survey_' + userData.name, JSON.stringify(userData));
+        }
+        
+        function copyResult() {
+            const score = calculateScore();
+            const rankInfo = getRankInfo(score);
+            const result = `
+🦐 OpenClaw 课堂调查结果
 
-📛 称呼：${userData.name}
-🎭 角色：${userData.usedAI}
-🤖 使用过：${userData.usedAI}
-📊 目的：${userData.purposes.join(',')||'无'}
-📈 频率：${userData.frequency}
-⭐ 熟练度：${userData.rating}/5
-
-🏆 段位：${rk.r} | 分数：${score.toFixed(1)}`;
-            window.location.href=`mailto:?subject=OpenClaw调查-${userData.name}&body=${encodeURIComponent(body)}`;
-        }
-        function copyResult(){
-            let score=calculateScore(),rk=getRank(score);
-            let text=`🦐 OpenClaw 课堂调查
-
-📛 称呼：${userData.name}
+📛 姓名：${userData.name}
 🎭 角色：${userData.role}
-🤖 使用过：${userData.usedAI}
-📊 目的：${userData.purposes.join(',')||'无'}
-📈 频率：${userData.frequency}
+🤖 使用情况：${userData.usedAI}
+📊 使用频率：${userData.frequency}
 ⭐ 熟练度：${userData.rating}/5
+🎯 目标：${userData.goal}
 
-🏆 段位：${rk.r} | 分数：${score.toFixed(1)}`;
-            navigator.clipboard.writeText(text).then(()=>alert('已复制！'));
+🏆 段位：${rankInfo.rank}
+
+——来自 OpenClaw 课堂调查小程序
+            `.trim();
+            
+            navigator.clipboard.writeText(result).then(() => alert('结果已复制！'));
         }
-        function resetForm(){
-            document.getElementById('name').value='';
-            document.getElementById('role').value='';
-            document.getElementById('usedAI').value='没有';
-            document.getElementById('frequency').value='偶尔';
-            document.querySelectorAll('#purposeGroup .checkbox-item').forEach(i=>{i.classList.remove('selected');i.querySelector('input').checked=false});
-            setRating(0);
-            document.getElementById('formContent').style.display='block';
-            document.getElementById('resultContent').style.display='none';
+        
+        function resetForm() {
+            if (confirm('确定要重新填写吗？')) {
+                document.getElementById('name').value = '';
+                document.getElementById('role').value = '';
+                document.getElementById('usedAI').value = '没有';
+                document.getElementById('frequency').value = '偶尔';
+                document.getElementById('goal').value = '提升效率';
+                document.getElementById('comment').value = '';
+                document.querySelectorAll('#purposeGroup .checkbox-item').forEach(el => {
+                    el.classList.remove('selected');
+                    el.querySelector('input').checked = false;
+                });
+                setRating(0);
+                nextStep(1);
+            }
         }
     </script>
 </body>
