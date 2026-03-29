@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 课堂调查 · AI 应用能力诊断</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .form-group label span {
+            color: #667eea;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #667eea;
+        }
+        
+        .checkbox-item.selected {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+        
+        .checkbox-item input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #f0f0ff;
+        }
+        
+        /* 评分星星 */
+        .rating {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .rating .star {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .rating .star:hover,
+        .rating .star.active {
+            border-color: #ffd700;
+            background: #fff9e6;
+            color: #ffd700;
+        }
+        
+        /* 结果展示 */
+        .result-box {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .result-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .result-table th,
+        .result-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-table th {
+            background: #667eea;
+            color: white;
+        }
+        
+        .result-table tr:hover {
+            background: #f0f0ff;
+        }
+        
+        .rank-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .rank-bronze { background: #cd7f32; color: white; }
+        .rank-silver { background: #c0c0c0; color: #333; }
+        .rank-gold { background: #ffd700; color: #333; }
+        .rank-diamond { background: #b9f2ff; color: #333; }
+        .rank-king { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        .growth-plan {
+            margin-top: 20px;
+        }
+        
+        .growth-phase {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .growth-phase h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .growth-phase ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .growth-phase li {
+            margin-bottom: 8px;
+        }
+        
+        .qr-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .qr-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .qr-placeholder {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        
+        .step-dot.active {
+            background: #667eea;
+        }
+        
+        .copy-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦐 OpenClaw 课堂调查</h1>
+            <p>AI 应用能力诊断 · 个性化成长计划</p>
+        </div>
+        
+        <div class="content">
+            <!-- 步骤指示器 -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1"></div>
+                <div class="step-dot" id="dot2"></div>
+                <div class="step-dot" id="dot3"></div>
+            </div>
+            
+            <!-- 步骤1: 基础信息 -->
+            <div class="step active" id="step1">
+                <h2 style="margin-bottom: 20px; color: #333;">📝 第一部分：基本信息</h2>
+                
+                <div class="form-group">
+                    <label>称呼 <span>*</span></label>
+                    <input type="text" id="name" placeholder="请输入你的名字">
+                </div>
+                
+                <div class="form-group">
+                    <label>年级/职业 <span>*</span></label>
+                    <select id="role">
+                        <option value="">请选择...</option>
+                        <option value="学生">学生</option>
+                        <option value="教师">教师</option>
+                        <option value="开发者">开发者</option>
+                        <option value="培训师">培训师</option>
+                        <option value="加密课程学员">加密课程学员</option>
+                        <option value="矿工">矿工</option>
+                        <option value="投资者">投资者</option>
+                        <option value="企业家">企业家</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn" onclick="nextStep(2)">下一步 →</button>
+                </div>
+            </div>
+            
+            <!-- 步骤2: 使用情况 -->
+            <div class="step" id="step2">
+                <h2 style="margin-bottom: 20px; color: #333;">🤖 第二部分：使用情况</h2>
+                
+                <div class="form-group">
+                    <label>之前使用过 AI 助手吗？</label>
+                    <select id="usedAI">
+                        <option value="没有">没有</option>
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Claude">Claude</option>
+                        <option value="文心一言">文心一言</option>
+                        <option value="通义千问">通义千问</option>
+                        <option value="多个">多个</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>使用 OpenClaw 的主要目的（可多选）</label>
+                    <div class="checkbox-group" id="purposeGroup">
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="查资料"> 查资料
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="写代码"> 写代码
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="聊天问答"> 聊天问答
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="文档处理"> 文档处理
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="日程管理"> 日程管理
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" value="自动化任务"> 自动化任务
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>使用频率</label>
+                    <select id="frequency">
+                        <option value="偶尔">偶尔用用</option>
+                        <option value="每周">每周几次</option>
+                        <option value="每天">每天使用</option>
+                        <option value="重度">重度依赖</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>熟练程度评分 (1-5分)</label>
+                    <div class="rating" id="rating">
+                        <div class="star" onclick="setRating(1)">1</div>
+                        <div class="star" onclick="setRating(2)">2</div>
+                        <div class="star" onclick="setRating(3)">3</div>
+                        <div class="star" onclick="setRating(4)">4</div>
+                        <div class="star" onclick="setRating(5)">5</div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="nextStep(1)">← 上一步</button>
+                    <button class="btn" onclick="nextStep(3)">下一步 →</button>
+                </div>
+            </div>
+            
+            <!-- 步骤3: 期望与目标 -->
+            <div class="step" id="step3">
+                <h2 style="margin-bottom: 20px; color: #333;">🎯 第三部分：期望与目标</h2>
+                
+                <div class="form-group">
+                    <label>你的成长目标</label>
+                    <select id="goal">
+                        <option value="提升效率">提升工作效率</option>
+                        <option value="学习新技术">学习新技术</option>
+                        <option value="自动化日常">自动化日常任务</option>
+                        <option value="辅助决策">辅助决策分析</option>
+                        <option value="内容创作">内容创作/写作</option>
+                        <option value="深入研究">深入研究 AI 原理</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>其他想说的话（可选）</label>
+                    <textarea id="comment" rows="3" placeholder="有什么建议或想法都可以说~"></textarea>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="nextStep(2)">← 上一步</button>
+                    <button class="btn" onclick="generateReport()">🎉 生成分析报告</button>
+                </div>
+            </div>
+            
+            <!-- 步骤4: 结果展示 -->
+            <div class="step" id="step4">
+                <h2 style="margin-bottom: 20px; color: #333;">📊 你的诊断报告</h2>
+                
+                <!-- 段位展示 -->
+                <div class="result-box">
+                    <h3>🏆 你的 AI 段位</h3>
+                    <div style="text-align: center; padding: 20px;">
+                        <span class="rank-badge rank-bronze" id="rankBadge" style="font-size: 18px; padding: 10px 24px;">青铜玩家</span>
+                        <p style="margin-top: 15px; color: #666;" id="rankDesc">刚刚起步，继续探索 AI 的奥秘吧！</p>
+                    </div>
+                </div>
+                
+                <!-- 分析表格 -->
+                <div class="result-box">
+                    <h3>📈 能力分析</h3>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>维度</th>
+                                <th>评估</th>
+                                <th>建议</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analysisTable">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 成长计划 -->
+                <div class="result-box">
+                    <h3>🚀 成长计划</h3>
+                    <div class="growth-plan" id="growthPlan">
+                    </div>
+                </div>
+                
+                <!-- 分享区域 -->
+                <div class="qr-section">
+                    <h3>📱 分享给同学一起测</h3>
+                    <div class="qr-placeholder">
+                        点击右上角 ···<br>分享到微信
+                    </div>
+                    <p style="color: #666; font-size: 13px;">长按保存结果图片</p>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="resetForm()">🔄 重新填写</button>
+                    <button class="btn" onclick="copyResult()">📋 复制结果</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentStep = 1;
+        let userData = {
+            name: '',
+            role: '',
+            usedAI: '',
+            purposes: [],
+            frequency: '',
+            rating: 0,
+            goal: '',
+            comment: ''
+        };
+        
+        // 步骤切换
+        function nextStep(step) {
+            // 验证必填
+            if (step > currentStep) {
+                if (currentStep === 1) {
+                    userData.name = document.getElementById('name').value.trim();
+                    userData.role = document.getElementById('role').value;
+                    if (!userData.name || !userData.role) {
+                        alert('请填写必填信息~');
+                        return;
+                    }
+                } else if (currentStep === 2) {
+                    userData.usedAI = document.getElementById('usedAI').value;
+                    userData.frequency = document.getElementById('frequency').value;
+                    // 获取选中的目的
+                    const purposes = [];
+                    document.querySelectorAll('#purposeGroup input:checked').forEach(cb => {
+                        purposes.push(cb.value);
+                    });
+                    userData.purposes = purposes;
+                }
+            }
+            
+            // 切换显示
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            // 更新指示器
+            document.querySelectorAll('.step-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i < step);
+            });
+            
+            currentStep = step;
+            
+            // 如果到达结果页，生成报告
+            if (step === 4) {
+                generateReportData();
+            }
+        }
+        
+        // 多选框
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            const cb = el.querySelector('input');
+            cb.checked = !cb.checked;
+        }
+        
+        // 评分
+        function setRating(val) {
+            userData.rating = val;
+            document.querySelectorAll('#rating .star').forEach((star, i) => {
+                star.classList.toggle('active', i < val);
+            });
+        }
+        
+        // 生成报告数据
+        function generateReportData() {
+            // 获取目标
+            userData.goal = document.getElementById('goal').value;
+            userData.comment = document.getElementById('comment').value;
+            
+            // 计算段位
+            let score = 0;
+            if (userData.usedAI !== '没有') score += 1;
+            score += userData.purposes.length * 0.5;
+            if (userData.frequency === '每天') score += 2;
+            else if (userData.frequency === '每周') score += 1;
+            score += userData.rating;
+            
+            let rank, rankClass, rankDesc;
+            if (score >= 8) {
+                rank = '王者'; rankClass = 'rank-king'; rankDesc = 'AI 大神！你是重度用户，已深度掌握 AI 技能！';
+            } else if (score >= 6) {
+                rank = '钻石'; rankClass = 'rank-diamond'; rankDesc = '熟练玩家，你已经能高效使用 AI 工具！';
+            } else if (score >= 4) {
+                rank = '黄金'; rankClass = 'rank-gold'; rankDesc = '进阶玩家，继续探索更多 AI 应用场景吧！';
+            } else if (score >= 2) {
+                rank = '白银'; rankClass = 'rank-silver'; rankDesc = '入门玩家，你已经踏上了 AI 学习之路！';
+            } else {
+                rank = '青铜'; rankClass = 'rank-bronze'; rankDesc = '刚刚起步，继续探索 AI 的奥秘吧！';
+            }
+            
+            document.getElementById('rankBadge').textContent = rank + ' · ' + userData.name;
+            document.getElementById('rankBadge').className = 'rank-badge ' + rankClass;
+            document.getElementById('rankDesc').textContent = rankDesc;
+            
+            // 生成分析表格
+            const analysisData = [
+                {
+                    dim: '应用广度',
+                    eval: userData.purposes.length >= 4 ? '优秀' : (userData.purposes.length >= 2 ? '良好' : '待提升'),
+                    suggestion: '尝试更多使用场景，如文档处理、日程管理等'
+                },
+                {
+                    dim: '使用频率',
+                    eval: userData.frequency === '每天' ? '高频' : (userData.frequency === '每周' ? '一般' : '较低'),
+                    suggestion: '建议将 AI 融入日常工作，形成使用习惯'
+                },
+                {
+                    dim: '熟练程度',
+                    eval: userData.rating >= 4 ? '熟练' : (userData.rating >= 3 ? '一般' : '初学'),
+                    suggestion: '多尝试复杂任务，学习高级提示词技巧'
+                },
+                {
+                    dim: '目标聚焦',
+                    eval: userData.goal ? '明确' : '待定',
+                    suggestion: '设定具体学习目标，提升更有方向'
+                }
+            ];
+            
+            let tableHtml = '';
+            analysisData.forEach(item => {
+                tableHtml += `<tr><td>${item.dim}</td><td>${item.eval}</td><td>${item.suggestion}</td></tr>`;
+            });
+            document.getElementById('analysisTable').innerHTML = tableHtml;
+            
+            // 生成成长计划
+            const roleSuggestions = {
+                '学生': ['使用 AI 辅助学习', '整理学习笔记', '练习编程技能'],
+                '教师': ['制作教学材料', '生成教案', '自动批改作业'],
+                '开发者': ['代码审查辅助', 'API 文档生成', 'Bug 分析'],
+                '培训师': ['课程内容生成', '学员问题解答', '培训材料制作'],
+                '加密课程学员': ['学习路线规划', '技术文档解读', '代码示例分析'],
+                '矿工': ['运维脚本生成', '日志分析', '监控告警配置'],
+                '投资者': ['行业报告分析', '数据可视化', '尽调辅助'],
+                '企业家': ['商业计划书', '市场分析', '团队管理建议'],
+                '其他': ['提升工作效率', '学习新技能', '自动化日常任务']
+            };
+            
+            const shortTerm = [
+                '熟悉 OpenClaw 基本操作',
+                '设置每日使用提醒',
+                '学习 2-3 个实用技巧'
+            ];
+            
+            const midTerm = [
+                '将 AI 融入工作流程',
+                '学习提示词优化技巧',
+                roleSuggestions[userData.role]?.[0] || '完成一个完整项目'
+            ];
+            
+            const longTerm = [
+                '成为团队 AI 顾问',
+                '分享学习心得',
+                '探索高级自动化'
+            ];
+            
+            const planHtml = `
+                <div class="growth-phase">
+                    <h4>🌱 短期（1个月）</h4>
+                    <ul>${shortTerm.map(s => `<li>${s}</li>`).join('')}</ul>
+                </div>
+                <div class="growth-phase">
+                    <h4>🌿 中期（1-3个月）</h4>
+                    <ul>${midTerm.map(s => `<li>${s}</li>`).join('')}</ul>
+                </div>
+                <div class="growth-phase">
+                    <h4>🌳 长期（3-6个月）</h4>
+                    <ul>${longTerm.map(s => `<li>${s}</li>`).join('')}</ul>
+                </div>
+            `;
+            
+            document.getElementById('growthPlan').innerHTML = planHtml;
+            
+            // 保存到本地存储
+            localStorage.setItem('openclaw_survey_' + userData.name, JSON.stringify(userData));
+        }
+        
+        // 复制结果
+        function copyResult() {
+            const result = `
+🦐 OpenClaw 课堂调查结果
+
+📛 姓名：${userData.name}
+🎭 角色：${userData.role}
+🤖 使用情况：${userData.usedAI}
+📊 使用频率：${userData.frequency}
+⭐ 熟练度：${userData.rating}/5
+🎯 目标：${userData.goal}
+
+🏆 段位：${document.getElementById('rankBadge').textContent}
+
+——来自 OpenClaw 课堂调查小程序
+            `;
+            
+            navigator.clipboard.writeText(result).then(() => {
+                alert('结果已复制到剪贴板！');
+            });
+        }
+        
+        // 重置表单
+        function resetForm() {
+            if (confirm('确定要重新填写吗？')) {
+                document.getElementById('name').value = '';
+                document.getElementById('role').value = '';
+                document.getElementById('usedAI').value = '没有';
+                document.getElementById('frequency').value = '偶尔';
+                document.getElementById('goal').value = '提升效率';
+                document.getElementById('comment').value = '';
+                document.querySelectorAll('#purposeGroup .checkbox-item').forEach(el => {
+                    el.classList.remove('selected');
+                    el.querySelector('input').checked = false;
+                });
+                setRating(0);
+                nextStep(1);
+            }
+        }
+        
+        // 页面加载时检查是否有数据
+        window.onload = function() {
+            // 可以在这里添加自动保存恢复功能
+        };
+    </script>
+</body>
+</html>
